@@ -51,6 +51,7 @@ def display_image(axis, image_tensor):
     axis.set_ylim(height, 0)
 
 
+# Show the images after applying the transformations
 def compare_transforms(transformations, index):
 
     if not all(isinstance(transf, Dataset) for transf in transformations):
@@ -70,4 +71,3 @@ def compare_transforms(transformations, index):
         display_image(axis, image_tensor)
 
     plt.show()
-
