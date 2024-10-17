@@ -13,7 +13,7 @@ transform = Compose([
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
-def build_datasets(BATCH_SIZE=BATCH_SIZE, IMG_SIZE=IMG_SIZE, transform=transform):
+def build_datasets(BATCH_SIZE=BATCH_SIZE, transform=transform):
 
     # Datasets
     train_dataset = ImageCaptionDataset("../data/train", "../data/train/captions_train.txt", transform)
