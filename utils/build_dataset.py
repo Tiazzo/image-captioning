@@ -8,7 +8,7 @@ BATCH_SIZE = 64
 
 transform = Compose([
     Resize(256),
-    CenterCrop(224),
+    CenterCrop(IMG_SIZE),
     ToTensor(),
     Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
@@ -30,3 +30,4 @@ def build_datasets(BATCH_SIZE=BATCH_SIZE, transform=transform):
     small_val_dataloader = DataLoader(small_val_dataset, batch_size=BATCH_SIZE, shuffle=False)
     
     return train_dataloader, val_dataloader, test_dataloader, small_train_dataloader, small_val_dataloader
+
