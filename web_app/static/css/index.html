@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Captioning App</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Generate Random Image</h1>
+
+        <!-- Form to generate a random image -->
+        <form action="/" method="post">
+            <button type="submit">Generate Random Image</button>
+        </form>
+
+        <!-- Display the image if image_name is available -->
+        {% if image_name %}
+        <h2>Randomly Selected Image</h2>
+        <img src="/static/images/{{ image_name }}" alt="Random Image">
+        {% endif %}
+
+        <!-- Display the caption if available -->
+        {% if caption %}
+        <h3>Generated Caption:</h3>
+        <p>{{ caption }}</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
