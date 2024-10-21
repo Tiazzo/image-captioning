@@ -129,7 +129,8 @@ class ModelExtractorRnnAtt():
                 inputs = self.decoder.embedding(predicted)  # [1, embed_size]
 
             sampled_caption = [self.vocab.idx2word[word_id] for word_id in sampled_ids]
-            sampled_caption.remove('<END>')
+            try: sampled_caption.remove('<END>')
+            except: pass
             sentence = ' '.join(sampled_caption)
 
         return sentence, img_name

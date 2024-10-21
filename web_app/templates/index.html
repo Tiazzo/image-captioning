@@ -1,31 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Captioning App</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script>
+        let timer;
+        
+        // Function to refresh the image and captions automatically
+        function startTimer() {
+            timer = setInterval(function() {
+                document.getElementById("refresh-form").submit();
+            }, 30000); // 30 seconds
+        }
+
+        // Function to reset the timer when the button is clicked
+        function resetTimer() {
+            clearInterval(timer); // Clear the existing timer
+            startTimer(); // Start the timer again
+        }
+
+        // Start the timer when the page loads
+        window.onload = function() {
+            startTimer();
+        };
+    </script>
 </head>
+
 <body>
     <div class="container">
         <h1>Generate Random Image</h1>
 
         <!-- Form to generate a random image -->
-        <form action="/" method="post">
-            <button type="submit">Generate Random Image</button>
+        <form id="refresh-form" action="/" method="post">
+            <button type="submit" onclick="resetTimer()">Generate Random Image</button>
         </form>
 
-        <!-- Display the image if image_name is available -->
-        {% if image_name %}
-            <h2>Randomly Selected Image</h2>
-            <img src="/static/images/test/{{ image_name }}" alt="Random Image">
-        {% endif %}
-
-        <!-- Display the caption if available -->
-        {% if caption %}
-            <h3>Generated Caption:</h3>
-            <p>{{ caption }}</p>
-        {% endif %}
+        <!-- Display the image and captions side by side -->
+        <div class="content">
+            <!-- Display the image if image_name is available -->
+            <div class="image-container">
+                <h2>Randomly Selected Image</h2>
+                <img src="/static/images/test/{{ image_name }}" alt="Random Image">
+            </div>
+            <!-- Display the captions if available -->
+            <div class="captions-container">
+                <h3>Generated Captions from Different Models </h3>
+                <div class="caption-box">
+                    <strong>RNN Model</br></strong> {{ caption_rnn }}
+                </div>
+                <div class="caption-box">
+                    <strong>RNN + Attention Model </br> </strong> {{ caption_rnn_att }}
+                </div>
+                <div class="caption-box">
+                    <strong>Transformer</br></strong> {{ caption_transf }}
+                </div>
+                <div class="caption-box">
+                    <strong>GIT </br></strong> {{ caption_git }}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
