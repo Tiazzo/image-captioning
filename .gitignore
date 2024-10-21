@@ -168,3 +168,4 @@ data/
 data/captions.txt
 ckpt/
 glove/
+web_app/static/images
