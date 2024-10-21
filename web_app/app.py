@@ -4,13 +4,15 @@ import torch
 from flask import Flask, render_template, request
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from web_app.models.resnet_rnn import ModelExtractor
+from web_app.models.resnet_rnn import ModelExtractorRnn
+from web_app.models.resnet_rnn_att import ModelExtractorRnnAtt
 from PIL import Image
 import random
 
 
 app = Flask(__name__)
-rnnModelExtractor = ModelExtractor()
+rnnModelExtractor = ModelExtractorRnn()
+rnnAttModelExtractor = ModelExtractorRnnAtt()
 
 # Path to your image dataset (inside web_app/static/images now)
 # image_folder = "web_app/static/images/test"  # Relative to the web_app folder
@@ -25,8 +27,9 @@ def index():
         idx = random.randint(0,4000)        
         
         # generate caption
-        caption_resnet_rnn, img_name = rnnModelExtractor.retrieve_model(idx)
-        print(img_name)
+        caption_resnet_rnn, img_name = rnnModelExtractor.generate_caption(idx)
+        caption_resnet_rnn_att, _ = rnnAttModelExtractor.generate_caption(idx)
+        # print(img_name)
         
         # Render the index page with the image and the generated caption
         return render_template("index.html", image_name=img_name, caption=caption_resnet_rnn)
