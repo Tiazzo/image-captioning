@@ -7,12 +7,15 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from web_app.models.resnet_rnn import ModelExtractorRnn
 from web_app.models.resnet_rnn_att import ModelExtractorRnnAtt
-from PIL import Image
+from web_app.models.resnet_vit_rnn import ModelExtactorVitRnn
+from web_app.models.git import GitModelExtractor
 
 
 app = Flask(__name__)
 rnnModelExtractor = ModelExtractorRnn()
 rnnAttModelExtractor = ModelExtractorRnnAtt()
+vitRnnModelExtractor = ModelExtactorVitRnn()
+GitModelExtractor = GitModelExtractor()
 
 # Single route for displaying and generating captions
 @app.route("/", methods=["GET", "POST"])
@@ -31,11 +34,11 @@ def index():
         try: caption_resnet_rnn_att = caption_resnet_rnn_att.replace('.', '')
         except: pass
 
-        caption_resnet_transf = "Transformer-generated caption"
-        try: caption_resnet_transf = caption_resnet_transf.replace('.', '')
+        caption_resnet_vit, _ = vitRnnModelExtractor.generate_caption(idx)
+        try: caption_resnet_vit = caption_resnet_vit.replace('.', '')
         except: pass
 
-        caption_git = "GIT-generated caption"
+        caption_git = GitModelExtractor.generate_caption(idx)
         try: caption_git = caption_git.replace('.', '')
         except: pass
 
@@ -45,7 +48,7 @@ def index():
             image_name=img_name,
             caption_rnn=caption_resnet_rnn,
             caption_rnn_att=caption_resnet_rnn_att,
-            caption_transf=caption_resnet_transf,
+            caption_vit=caption_resnet_vit,
             caption_git=caption_git
         )
 
