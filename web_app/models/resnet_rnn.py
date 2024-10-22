@@ -1,15 +1,8 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
-from PIL import Image
-import os
-from sklearn.model_selection import train_test_split
-import torchvision.models as models
-import string
+from torch.utils.data import DataLoader
 import sys
 import nltk
 from .resnet_rnn_classes import Vocabulary, FlickrDataset, EncoderCNN, DecoderRNN
@@ -21,9 +14,9 @@ nltk.download("punkt_tab")
 class ModelExtractorRnn():
     
     def __init__(self):
-        device =  torch.device("cpu")
+        device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        self.ckpt = torch.load("web_app/ckpt/resnet_rnn.ckpt", map_location=torch.device("cpu"))
+        self.ckpt = torch.load("web_app/ckpt/resnet_rnn.ckpt", map_location=device)
         self.vocab = self.ckpt["vocab"]
         self.embedding_matrix = self.ckpt["embedding_matrix"]
 
@@ -81,7 +74,7 @@ class ModelExtractorRnn():
 
     # Generate caption function
     def generate_caption(self, idx, max_length=20):
-        device = torch.device("cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.encoder.eval()
         self.decoder.eval()
 

@@ -6,8 +6,7 @@ from web_app.models.git_classes import ImageCaptionDataset
 class GitModelExtractor():
 
     def __init__(self):
-        # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        device = torch.device("cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.ckpt = torch.load("web_app/ckpt/git.ckpt", map_location=device)
         
         self.model = AutoModelForCausalLM.from_pretrained("microsoft/git-base").to(device)
@@ -18,9 +17,8 @@ class GitModelExtractor():
 
     
     def generate_caption(self, idx):
-        # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        device = torch.device("cpu")
-        encoding, image = self.test_dataset[idx]
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        encoding, _ = self.test_dataset[idx]
 
         # Make sure encoding is moved to the right device
         encoding = {k: v.unsqueeze(0).to(device) for k, v in encoding.items() if k in ['input_ids', 'pixel_values']}

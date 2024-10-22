@@ -1,15 +1,8 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
-from PIL import Image
-import os
-from sklearn.model_selection import train_test_split
-import torchvision.models as models
-import string
+from torch.utils.data import DataLoader
 import sys
 import nltk
 from .resnet_rnn_att_classes import Vocabulary, FlickrDataset, EncoderCNN, DecoderWithAttention
@@ -17,15 +10,12 @@ sys.modules['__main__'].Vocabulary = Vocabulary
 nltk.download("punkt_tab")
 
 
-
 class ModelExtractorRnnAtt():
 
     def __init__(self):
-        device = torch.device("cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        device =  torch.device("cpu")
-
-        self.ckpt = torch.load("web_app/ckpt/resnet_rnn_att.ckpt", map_location=torch.device("cpu"))
+        self.ckpt = torch.load("web_app/ckpt/resnet_rnn_att.ckpt", map_location=device)
         self.vocab = self.ckpt["vocab"]
         self.embedding_matrix = self.ckpt["embedding_matrix"]
 
@@ -84,7 +74,7 @@ class ModelExtractorRnnAtt():
     def generate_caption(self, idx, max_length=20):
         self.encoder.eval()
         self.decoder.eval()
-        device = torch.device("cpu")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         image, _, img_name = self.test_dataset[idx]
 

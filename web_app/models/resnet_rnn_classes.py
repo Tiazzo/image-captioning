@@ -1,22 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import torch
 import torch.nn as nn
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 from PIL import Image
 import os
-from sklearn.model_selection import train_test_split
 import torchvision.models as models
-import string
 import nltk
-
 nltk.download("punkt_tab")
-
-# Device configuration
-device = torch.device("cpu")
-print(device)
 
 
 # Vocabulary class
@@ -27,7 +16,6 @@ class Vocabulary:
         self.idx2word = {0: "<PAD>", 1: "<START>", 2: "<END>", 3: "<UNK>"}
         self.word_freq = {}
         self.idx = 4
-        # self.translator = str.maketrans("","", string.punctuation + string.digits + "\t\r\n")
 
     def __len__(self):
         return len(self.word2idx)

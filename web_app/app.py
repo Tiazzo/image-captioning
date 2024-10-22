@@ -17,6 +17,9 @@ rnnAttModelExtractor = ModelExtractorRnnAtt()
 vitRnnModelExtractor = ModelExtactorVitRnn()
 GitModelExtractor = GitModelExtractor()
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(device)
+
 # Single route for displaying and generating captions
 @app.route("/", methods=["GET", "POST"])
 def index():

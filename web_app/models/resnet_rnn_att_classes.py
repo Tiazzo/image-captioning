@@ -1,20 +1,13 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import torch
 import torch.nn as nn
-import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 from PIL import Image
 import os
-from sklearn.model_selection import train_test_split
 import torchvision.models as models
-import string
 import nltk
 nltk.download('punkt_tab')
 
-device = torch.device('cpu')
-print(device)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class Vocabulary:
