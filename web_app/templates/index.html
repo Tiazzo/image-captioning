@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Captioning App</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let timer;
         
@@ -49,20 +50,89 @@
             <div class="captions-container">
                 <h3>Generated Captions from Different Models </h3>
                 <div class="caption-box">
-                    <strong>RNN Model</br></strong> {{ caption_rnn }}
+                    <strong>RNN Model</br></strong> {{ captions[0] }}
                 </div>
                 <div class="caption-box">
-                    <strong>RNN + Attention Model </br> </strong> {{ caption_rnn_att }}
+                    <strong>RNN + Attention Model </br> </strong> {{ captions[1] }}
                 </div>
                 <div class="caption-box">
-                    <strong>VIT + RNN</br></strong> {{ caption_vit }}
+                    <strong>VIT + RNN</br></strong> {{ captions[2] }}
                 </div>
                 <div class="caption-box">
-                    <strong>GIT </br></strong> {{ caption_git }}
+                    <strong>GIT </br></strong> {{ captions[3] }}
+                </div>
+                <div class="caption-box">
+                    <strong>Scores </br></strong> {{ scores[0] }}
                 </div>
             </div>
         </div>
+        <div class="caption-box">
+            <canvas id="matrixChart" width="200" height="50"></canvas>
+        </div>
     </div>
+
+    <script>
+        const matrix = {{ scores | tojson }};
+
+// Creazione dei dati per lo scatter plot
+const scatterData = [];
+for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+        scatterData.push({
+            x: j + 1,  // Indice della colonna (da 1 a 4)
+            y: matrix[i][j]  // Valore della cella
+        });
+    }
+}
+
+// Configurazione dei dati per lo scatter plot
+const data = {
+    datasets: [{
+        label: 'Matrix Values',
+        data: scatterData,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        pointRadius: 5
+    }]
+};
+
+// Configurazione del grafico
+const config = {
+    type: 'scatter',
+    data: data,
+    options: {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+                title: {
+                    display: true,
+                    text: 'Column Index'
+                },
+                ticks: {
+                    stepSize: 1,
+                    min: 1,
+                    max: 4
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Matrix Values'
+                }
+            }
+        }
+    }
+};
+
+// Crea il grafico nel canvas
+const matrixChart = new Chart(
+    document.getElementById('matrixChart'),
+    config
+);
+    </script>
+    
 </body>
 
 </html>

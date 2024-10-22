@@ -33,13 +33,13 @@ class ModelExtractorRnn():
         captions_test_file = 'web_app/static/images/test/captions_test.txt'
 
         captions_train_df = pd.read_table(captions_train_file, delimiter=',', header=None, names=['image', 'caption'])
-        captions_test_df = pd.read_table(captions_test_file, delimiter=',', header=None, names=['image', 'caption'])
+        self.captions_test_df = pd.read_table(captions_test_file, delimiter=',', header=None, names=['image', 'caption'])
 
         train_image_dir = 'web_app/static/images/train/'
         test_image_dir = 'web_app/static/images/test'
 
         self.train_dataset = FlickrDataset(captions_train_df, train_image_dir, self.vocab, transform=self.transform)
-        self.test_dataset = FlickrDataset(captions_test_df, test_image_dir, self.vocab, transform=self.transform)
+        self.test_dataset = FlickrDataset(self.captions_test_df, test_image_dir, self.vocab, transform=self.transform)
 
         batch_size = 32
         self.train_loader = DataLoader( dataset=self.train_dataset, batch_size=batch_size, shuffle=True, num_workers=2, collate_fn=self.collate_fn)
@@ -79,6 +79,7 @@ class ModelExtractorRnn():
         self.decoder.eval()
 
         image, _, img_name = self.test_dataset[idx]
+        refs = self.captions_test_df[self.captions_test_df["image"] == img_name]["caption"].values
 
         with torch.no_grad():
             image = image.to(device)
@@ -92,4 +93,4 @@ class ModelExtractorRnn():
                 sampled_caption.append(word)
             sentence = " ".join(sampled_caption)
         
-        return sentence, img_name
+        return sentence, img_name, refs

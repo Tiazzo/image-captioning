@@ -18,19 +18,14 @@ class GitModelExtractor():
     
     def generate_caption(self, idx):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        encoding, _ = self.test_dataset[idx]
+        encoding, image = self.test_dataset[idx]
 
-        # Make sure encoding is moved to the right device
-        encoding = {k: v.unsqueeze(0).to(device) for k, v in encoding.items() if k in ['input_ids', 'pixel_values']}
-        
-        # Generate caption
-        with torch.no_grad():
-            generated_ids = self.model.generate(**encoding, max_length=513)
-        
-        # Decode generated caption
-        caption = self.processor.decode(generated_ids[0], skip_special_tokens=True)
+        inputs = self.processor(images=image, return_tensors='pt').to(device)
+        pixel_values = inputs.pixel_values
+        generated_ids = self.model.generate(pixel_values=pixel_values, max_length=50)
+        generated_caption = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
-        return caption
+        return generated_caption
 
 
 
