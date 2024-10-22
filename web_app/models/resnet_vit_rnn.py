@@ -87,13 +87,16 @@ class ModelExtactorVitRnn():
                 if word == '<END>':
                     break
                 sampled_caption.append(word)
-            sentence = [sampled_caption[0]]
+            sentence = []
             for c in sampled_caption:
-                if sentence[-1] != c:
+                if len(sentence) == 0:
                     sentence.append(c)
-
+                elif sentence[-1] != c:
+                    sentence.append(c)
+                    
             try: sentence.remove('<END>')
             except: pass
+
             sentence = ' '.join(sentence)
 
         return sentence, img_name
