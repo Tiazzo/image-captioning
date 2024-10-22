@@ -31,20 +31,17 @@
 </head>
 
 <body>
-    <h1 class="title">Exploring Image Captioning with Multiple Neural Network Models</h1>
-
-    <!-- Form to generate a random image -->
-    <div class="button-container">
-        <form id="refresh-form" action="/" method="post">
-            <button type="submit" class="generate-button" onclick="resetTimer()">Generate Random Image</button>
-        </form>
-    </div>
-
+    <h1 class="title">Exploring Image Captioning with </br> Multiple Neural Network Models</h1>
     <!-- Display the image and captions side by side -->
     <div class="content-container">
         <!-- Display the image if image_name is available -->
         <div class="image-container">
-            <img src="/static/images/test/{{ image_name }}" alt="Random Image" class="selected-image">
+            <form id="refresh-form" action="/" method="post">
+                <button type="submit" onclick="resetTimer()">
+                    <img src="/static/images/test/{{ image_name }}" alt="Random Image" class="selected-image">
+                </button>
+            </form>
+
         </div>
 
         <!-- Display the captions if available -->
