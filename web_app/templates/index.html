@@ -9,10 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let timer;
-        
+
         // Function to refresh the image and captions automatically
         function startTimer() {
-            timer = setInterval(function() {
+            timer = setInterval(function () {
                 document.getElementById("refresh-form").submit();
             }, 30000); // 30 seconds
         }
@@ -24,115 +24,206 @@
         }
 
         // Start the timer when the page loads
-        window.onload = function() {
+        window.onload = function () {
             startTimer();
         };
     </script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Generate Random Image</h1>
+    <h1 class="title">Exploring Image Captioning with Multiple Neural Network Models</h1>
 
-        <!-- Form to generate a random image -->
+    <!-- Form to generate a random image -->
+    <div class="button-container">
         <form id="refresh-form" action="/" method="post">
-            <button type="submit" onclick="resetTimer()">Generate Random Image</button>
+            <button type="submit" class="generate-button" onclick="resetTimer()">Generate Random Image</button>
         </form>
-
-        <!-- Display the image and captions side by side -->
-        <div class="content">
-            <!-- Display the image if image_name is available -->
-            <div class="image-container">
-                <h2>Randomly Selected Image</h2>
-                <img src="/static/images/test/{{ image_name }}" alt="Random Image">
-            </div>
-            <!-- Display the captions if available -->
-            <div class="captions-container">
-                <h3>Generated Captions from Different Models </h3>
-                <div class="caption-box">
-                    <strong>RNN Model</br></strong> {{ captions[0] }}
-                </div>
-                <div class="caption-box">
-                    <strong>RNN + Attention Model </br> </strong> {{ captions[1] }}
-                </div>
-                <div class="caption-box">
-                    <strong>VIT + RNN</br></strong> {{ captions[2] }}
-                </div>
-                <div class="caption-box">
-                    <strong>GIT </br></strong> {{ captions[3] }}
-                </div>
-                <div class="caption-box">
-                    <strong>Scores </br></strong> {{ scores[0] }}
-                </div>
-            </div>
-        </div>
-        <div class="caption-box">
-            <canvas id="matrixChart" width="200" height="50"></canvas>
-        </div>
     </div>
 
+    <!-- Display the image and captions side by side -->
+    <div class="content-container">
+        <!-- Display the image if image_name is available -->
+        <div class="image-container">
+            <img src="/static/images/test/{{ image_name }}" alt="Random Image" class="selected-image">
+        </div>
+
+        <!-- Display the captions if available -->
+        <div class="captions-container">
+            <div class="caption-box" style="border-left: 5px solid #ff9999;">
+                <strong>RNN Model</strong> <br> {{ captions[0] }}
+            </div>
+            <div class="caption-box" style="border-left: 5px solid #99ccff;">
+                <strong>RNN + Attention Model</strong> <br> {{ captions[1] }}
+            </div>
+            <div class="caption-box" style="border-left: 5px solid #99ff99;">
+                <strong>VIT + RNN</strong> <br> {{ captions[2] }}
+            </div>
+            <div class="caption-box" style="border-left: 5px solid #ffcc99;">
+                <strong>GIT</strong> <br> {{ captions[3] }}
+            </div>
+            <div class="chart-container">
+                <canvas id="matrixChart" width="600" height="300"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Display the scatter plot below -->
+
+
     <script>
+        // Assuming matrix is 4x4, where:
+        // - matrix[i][0]: BLEU score for model i
+        // - matrix[i][1]: ROUGE-1 score for model i
+        // - matrix[i][2]: ROUGE-2 score for model i
+        // - matrix[i][3]: ROUGE-L score for model i
         const matrix = {{ scores | tojson }};
 
-// Creazione dei dati per lo scatter plot
-const scatterData = [];
-for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-        scatterData.push({
-            x: j + 1,  // Indice della colonna (da 1 a 4)
-            y: matrix[i][j]  // Valore della cella
-        });
-    }
-}
+        // Define colors for each model point
+        const colors = ['rgba(255, 153, 153, 0.8)', 'rgba(153, 204, 255, 0.8)', 'rgba(153, 255, 153, 0.8)', 'rgba(255, 204, 153, 0.8)'];
 
-// Configurazione dei dati per lo scatter plot
-const data = {
-    datasets: [{
-        label: 'Matrix Values',
-        data: scatterData,
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        pointRadius: 5
-    }]
-};
-
-// Configurazione del grafico
-const config = {
-    type: 'scatter',
-    data: data,
-    options: {
-        scales: {
-            x: {
-                type: 'linear',
-                position: 'bottom',
-                title: {
-                    display: true,
-                    text: 'Column Index'
-                },
-                ticks: {
-                    stepSize: 1,
-                    min: 1,
-                    max: 4
-                }
+        // Prepare scatter plot data for each score type (BLEU, ROUGE-1, ROUGE-2, ROUGE-L)
+        const scatterData = [
+            {
+                label: 'BLEU Score',
+                data: [
+                    { x: 1, y: matrix[0][0], model: 'RNN Model' },
+                    { x: 1, y: matrix[0][1], model: 'RNN + Attention Model' },
+                    { x: 1, y: matrix[0][2], model: 'VIT + RNN' },
+                    { x: 1, y: matrix[0][3], model: 'GIT' }
+                ],
+                backgroundColor: colors,
+                borderColor: colors,
+                pointRadius: 8
             },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Matrix Values'
+            {
+                label: 'ROUGE-1 Score',
+                data: [
+                    { x: 2, y: matrix[1][0], model: 'RNN Model' },
+                    { x: 2, y: matrix[1][1], model: 'RNN + Attention Model' },
+                    { x: 2, y: matrix[1][2], model: 'VIT + RNN' },
+                    { x: 2, y: matrix[1][3], model: 'GIT' }
+                ],
+                backgroundColor: colors,
+                borderColor: colors,
+                pointRadius: 8
+            },
+            {
+                label: 'ROUGE-2 Score',
+                data: [
+                    { x: 3, y: matrix[2][0], model: 'RNN Model' },
+                    { x: 3, y: matrix[2][1], model: 'RNN + Attention Model' },
+                    { x: 3, y: matrix[2][2], model: 'VIT + RNN' },
+                    { x: 3, y: matrix[2][3], model: 'GIT' }
+                ],
+                backgroundColor: colors,
+                borderColor: colors,
+                pointRadius: 8
+            },
+            {
+                label: 'ROUGE-L Score',
+                data: [
+                    { x: 4, y: matrix[3][0], model: 'RNN Model' },
+                    { x: 4, y: matrix[3][1], model: 'RNN + Attention Model' },
+                    { x: 4, y: matrix[3][2], model: 'VIT + RNN' },
+                    { x: 4, y: matrix[3][3], model: 'GIT' }
+                ],
+                backgroundColor: colors,
+                borderColor: colors,
+                pointRadius: 8
+            }
+        ];
+
+        // Configurazione dei dati per lo scatter plot
+        const data = {
+            datasets: scatterData.flatMap((scoreData, index) => scoreData.data.map((point, i) => ({
+                label: `Model: ${point.model}`,
+                data: [{ x: point.x, y: point.y }],
+                backgroundColor: colors[i],
+                borderColor: colors[i],
+                pointRadius: 8,
+                showLine: false
+            })))
+        };
+
+        // Configurazione del grafico
+        const config = {
+            type: 'scatter',
+            data: data,
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            generateLabels: function (chart) {
+                                return [
+                                    {
+                                        text: 'RNN Model',
+                                        fillStyle: colors[0]
+                                    },
+                                    {
+                                        text: 'RNN + Attention Model',
+                                        fillStyle: colors[1]
+                                    },
+                                    {
+                                        text: 'VIT + RNN',
+                                        fillStyle: colors[2]
+                                    },
+                                    {
+                                        text: 'GIT',
+                                        fillStyle: colors[3]
+                                    }
+                                ];
+                            },
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `${context.dataset.label}: (${context.raw.x}, ${context.raw.y})`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Score Type'
+                        },
+                        ticks: {
+                            stepSize: 1,
+                            min: 0.5,
+                            max: 4.5,
+                            callback: function (value) {
+                                const labels = ['BLEU Score', 'ROUGE-1', 'ROUGE-2', 'ROUGE-L'];
+                                return labels[value - 1] || value;
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Score Value'
+                        }
+                    }
                 }
             }
-        }
-    }
-};
+        };
 
-// Crea il grafico nel canvas
-const matrixChart = new Chart(
-    document.getElementById('matrixChart'),
-    config
-);
+        // Crea il grafico nel canvas
+        const matrixChart = new Chart(
+            document.getElementById('matrixChart'),
+            config
+        );
     </script>
-    
+
 </body>
 
 </html>

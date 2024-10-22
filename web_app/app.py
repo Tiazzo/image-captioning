@@ -22,42 +22,38 @@ print(device)
 # Single route for displaying and generating captions
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
 
-        # Retrieve the index of the selected image
-        idx = random.randint(0, 4000)
+    # Retrieve the index of the selected image
+    idx = random.randint(0, 4000)
 
-        # generate caption
-        caption_resnet_rnn, img_name, refs = rnnModelExtractor.generate_caption(idx)
-        try: caption_resnet_rnn = caption_resnet_rnn.replace('.', '')
-        except: pass
+    # generate caption
+    caption_resnet_rnn, img_name, refs = rnnModelExtractor.generate_caption(idx)
+    try: caption_resnet_rnn = caption_resnet_rnn.replace('.', '')
+    except: pass
 
-        caption_resnet_rnn_att, _ = rnnAttModelExtractor.generate_caption(idx)
-        try: caption_resnet_rnn_att = caption_resnet_rnn_att.replace('.', '')
-        except: pass
+    caption_resnet_rnn_att, _ = rnnAttModelExtractor.generate_caption(idx)
+    try: caption_resnet_rnn_att = caption_resnet_rnn_att.replace('.', '')
+    except: pass
 
-        caption_resnet_vit, _ = vitRnnModelExtractor.generate_caption(idx)
-        try: caption_resnet_vit = caption_resnet_vit.replace('.', '')
-        except: pass
+    caption_resnet_vit, _ = vitRnnModelExtractor.generate_caption(idx)
+    try: caption_resnet_vit = caption_resnet_vit.replace('.', '')
+    except: pass
 
-        caption_git = GitModelExtractor.generate_caption(idx)
-        try: caption_git = caption_git.replace('.', '')
-        except: pass
+    caption_git = GitModelExtractor.generate_caption(idx)
+    try: caption_git = caption_git.replace('.', '')
+    except: pass
 
 
-        captions = [caption_resnet_rnn, caption_resnet_rnn_att, caption_resnet_vit, caption_git]
+    captions = [caption_resnet_rnn, caption_resnet_rnn_att, caption_resnet_vit, caption_git]
 
-        scores = compute_scores(captions, refs)
-        print(scores)
-        return render_template(
-            "index.html",
-            image_name=img_name,
-            captions=captions,
-            scores=scores
-        )
-
-    # For GET requests, just render the page without captions
-    return render_template("index.html", captions=['', '', '', ''])
+    scores = compute_scores(captions, refs)
+    print(scores)
+    return render_template(
+        "index.html",
+        image_name=img_name,
+        captions=captions,
+        scores=scores
+    )
 
 import nltk
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction

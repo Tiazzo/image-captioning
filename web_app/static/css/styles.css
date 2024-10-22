@@ -1,84 +1,83 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
-.container {
+h1, h2, h3 {
     text-align: center;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1000px;
 }
 
-.content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+.title {
     margin-top: 20px;
 }
 
-.image-container {
-    flex: 1;
+.button-container {
     text-align: center;
-    margin-right: 30px;  /* Adds space between image and captions */
+    margin: 20px 0;
 }
 
-.captions-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.caption-box {
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    font-size: 16px;
-    color: #333;
-}
-
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
+.generate-button {
+    background-color: #28a745;
     color: white;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #45a049;
+.generate-button:hover {
+    background-color: #218838;
 }
 
-img {
-    border-radius: 15px;
+.content-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; /* Align vertically */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.image-container {
+    flex: 1 1 40%;
+    text-align: center;
+}
+
+.selected-image {
     max-width: 100%;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.captions-container {
+    flex: 1 1 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-ul li {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
+.caption-box {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+
+    .image-container, .captions-container {
+        flex: 1 1 100%;
+    }
 }
