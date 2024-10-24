@@ -47,10 +47,10 @@
         <!-- Display the captions if available -->
         <div class="captions-container">
             <div class="caption-box" style="border-left: 5px solid #ff9999;">
-                <strong>RNN Model</strong> <br> {{ captions[0] }}
+                <strong>ResNet50 + RNN</strong> <br> {{ captions[0] }}
             </div>
             <div class="caption-box" style="border-left: 5px solid #99ccff;">
-                <strong>RNN + Attention Model</strong> <br> {{ captions[1] }}
+                <strong>ResNet50 + RNN + Att.</strong> <br> {{ captions[1] }}
             </div>
             <div class="caption-box" style="border-left: 5px solid #99ff99;">
                 <strong>VIT + RNN</strong> <br> {{ captions[2] }}
@@ -84,8 +84,8 @@
             {
                 label: 'BLEU Score',
                 data: [
-                    { x: 1, y: matrix[0][0], model: 'RNN Model' },
-                    { x: 1, y: matrix[0][1], model: 'RNN + Attention Model' },
+                    { x: 1, y: matrix[0][0], model: 'ResNet50 + RNN' },
+                    { x: 1, y: matrix[0][1], model: 'ResNet50 + RNN + Att.' },
                     { x: 1, y: matrix[0][2], model: 'VIT + RNN' },
                     { x: 1, y: matrix[0][3], model: 'GIT' }
                 ],
@@ -96,8 +96,8 @@
             {
                 label: 'ROUGE-1 Score',
                 data: [
-                    { x: 2, y: matrix[1][0], model: 'RNN Model' },
-                    { x: 2, y: matrix[1][1], model: 'RNN + Attention Model' },
+                    { x: 2, y: matrix[1][0], model: 'ResNet50 + RNN' },
+                    { x: 2, y: matrix[1][1], model: 'ResNet50 + RNN + Att.' },
                     { x: 2, y: matrix[1][2], model: 'VIT + RNN' },
                     { x: 2, y: matrix[1][3], model: 'GIT' }
                 ],
@@ -108,8 +108,8 @@
             {
                 label: 'ROUGE-2 Score',
                 data: [
-                    { x: 3, y: matrix[2][0], model: 'RNN Model' },
-                    { x: 3, y: matrix[2][1], model: 'RNN + Attention Model' },
+                    { x: 3, y: matrix[2][0], model: 'ResNet50 + RNN' },
+                    { x: 3, y: matrix[2][1], model: 'ResNet50 + RNN + Att.' },
                     { x: 3, y: matrix[2][2], model: 'VIT + RNN' },
                     { x: 3, y: matrix[2][3], model: 'GIT' }
                 ],
@@ -120,8 +120,8 @@
             {
                 label: 'ROUGE-L Score',
                 data: [
-                    { x: 4, y: matrix[3][0], model: 'RNN Model' },
-                    { x: 4, y: matrix[3][1], model: 'RNN + Attention Model' },
+                    { x: 4, y: matrix[3][0], model: 'ResNet50 + RNN' },
+                    { x: 4, y: matrix[3][1], model: 'ResNet50 + RNN + Att.' },
                     { x: 4, y: matrix[3][2], model: 'VIT + RNN' },
                     { x: 4, y: matrix[3][3], model: 'GIT' }
                 ],
@@ -155,11 +155,11 @@
                             generateLabels: function (chart) {
                                 return [
                                     {
-                                        text: 'RNN Model',
+                                        text: 'ResNet50 + RNN',
                                         fillStyle: colors[0]
                                     },
                                     {
-                                        text: 'RNN + Attention Model',
+                                        text: 'ResNet50 + RNN + Att.',
                                         fillStyle: colors[1]
                                     },
                                     {

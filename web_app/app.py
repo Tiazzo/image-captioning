@@ -24,7 +24,7 @@ print(device)
 def index():
 
     # Retrieve the index of the selected image
-    idx = random.randint(0, 4000)
+    idx = random.randint(0, 20000)
 
     # generate caption
     caption_resnet_rnn, img_name, refs = rnnModelExtractor.generate_caption(idx)
