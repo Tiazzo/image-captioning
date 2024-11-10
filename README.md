@@ -8,11 +8,12 @@ This project explores various neural network architectures for image captioning.
 - [Architecture Comparison](#architecture-comparison)
 - [Results](#results)
 - [Conclusion](#conclusion)
+- [Web App](#web-app)
 - [References](#references)
 - [Contributors](#contributors)
 
 ## Dataset
-We used the [Flickr30k dataset](https://www.kaggle.com/datasets/adityajn105/flickr30k), a popular benchmark for image captioning. The dataset consists of 30,000 images with five captions per image, describing various objects, actions, and scenes. It provides a well-rounded base for training and evaluating models due to the diverse image content; moreover, having multiple captions as referene allows robust training and evaluation phases.
+We used the [Flickr30k dataset](https://www.kaggle.com/datasets/adityajn105/flickr30k), a popular benchmark for image captioning. The dataset consists of 30,000 images with five captions per image, describing various objects, actions, and scenes. It provides a well-rounded base for training and evaluating models due to the diverse image content; moreover, having multiple captions as referene allows robust training and evaluation phases. The split phase has been performed using the script [split.ipynb](./split.ipynb), allowing custom selection of partitions for training, validation and testing sets.
 
 ## Models
 Model proposed are mainly based on an encoder-decoder architecture involving two main steps:
@@ -75,6 +76,13 @@ m = \arg \max_{m \in \text{Models}} \sum_{i \in \text{Metrics}} \text{Score}(m, 
 $$
 
 However, human observation could still lead to a different result due to the complexity of the task.
+
+
+## Web App
+To launch web app in local hosting, you need to install proper requirements and get all models able to produce outcomes from each one; then the following script from root directory:
+```sh
+python3 web_app/app.py
+```
 
 
 ## References
