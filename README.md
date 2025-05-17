@@ -98,5 +98,5 @@ python3 web_app/app.py
 
 ## Contributors
 
-- [whiitex](https://github.com/whiitex) 🦍
 - [Tiazzo](https://github.com/Tiazzo)
+- [whiitex](https://github.com/whiitex) 🦍
